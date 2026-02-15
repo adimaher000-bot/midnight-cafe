@@ -1,0 +1,29 @@
+# XAMPP Setup Instructions
+
+1.  **Copy Files**:
+    Copy the entire `cafeonline` folder to your XAMPP `htdocs` directory.
+    Normally located at: `C:\xampp\htdocs\`
+    Resulting path: `C:\xampp\htdocs\cafeonline\`
+
+2.  **Start XAMPP**:
+    Open the XAMPP Control Panel and click "Start" for both **Apache** and **MySQL**.
+
+3.  **Setup Database**:
+    Open your browser and visit:
+    [http://localhost/cafeonline/setup_database.php](http://localhost/cafeonline/setup_database.php)
+    
+    This script will automatically:
+    - Connect to MySQL (Default: `root` / ``)
+    - Create the database `cafe_db`
+    - Create required tables
+    - Create the Admin user (`admin@cafe.com` / `admin123`)
+
+4.  **Access Website**:
+    Once setup is complete, you can access the site at:
+    [http://localhost/cafeonline/](http://localhost/cafeonline/)
+
+    **Admin Panel**:
+    [http://localhost/cafeonline/admin/login.php](http://localhost/cafeonline/admin/login.php)
+    (Use: `admin@cafe.com`, `admin123`)
+
+If you encounter issues, ensure your XAMPP MySQL password is empty (default). If you have set a password, edit `config/db_connect.php` line 7: `$pass = 'YOUR_PASSWORD';`.
