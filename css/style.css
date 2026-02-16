@@ -443,13 +443,69 @@ h6 {
 }
 
 /* Responsive */
+/* Mobile Navigation */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--primary);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
 @media (max-width: 768px) {
     .navbar {
         width: 100%;
         top: 0;
         border-radius: 0;
-        padding: 1rem;
+        padding: 1rem 5%;
+        flex-wrap: wrap; /* Allow items to wrap */
+        background: rgba(26, 15, 0, 0.95); /* Solid background on mobile */
     }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    /* Hide links by default on mobile */
+    .nav-links-center,
+    .nav-links-right {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(212, 163, 115, 0.2);
+        margin-top: 1rem;
+        animation: slideDown 0.3s ease-out forwards;
+    }
+
+    /* Show links when active */
+    .navbar.active .nav-links-center,
+    .navbar.active .nav-links-right {
+        display: flex;
+    }
+
+    .nav-links-right {
+        border-top: none;
+        margin-top: 0;
+        padding-top: 0.5rem;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Toast Notification */

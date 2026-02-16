@@ -35,6 +35,11 @@ if (isLoggedIn() && isset($_SESSION['cart'])) {
             <?php echo get_setting('site_title', 'Midnight Cafe'); ?>
         </a>
 
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
         <div class="nav-links-center">
             <a href="<?php echo BASE_URL; ?>index.php" class="btn btn-accent" style="border:none;">Home</a>
             <a href="<?php echo BASE_URL; ?>index.php#menu-section" class="btn btn-accent" style="border:none;">Menu</a>

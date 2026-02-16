@@ -259,4 +259,9 @@ function togglePasswordVisibility(inputId, iconId) {
         icon.classList.add("fa-eye");
     }
 }
-window.togglePasswordVisibility = togglePasswordVisibility;
+
+function toggleMobileMenu() {
+    const navbar = document.querySelector('.navbar');
+    navbar.classList.toggle('active');
+}
+window.toggleMobileMenu = toggleMobileMenu;

@@ -8,7 +8,8 @@
                 <div class="footer-logo">
                     <i class="fas fa-coffee"></i> <span>Midnight Cafe</span>
                 </div>
-                <p class="footer-tagline">Brewing moments of happiness, one cup at a time. Experience the perfect blend of tradition and modern vibes.</p>
+                <p class="footer-tagline">Brewing moments of happiness, one cup at a time. Experience the perfect blend
+                    of tradition and modern vibes.</p>
                 <div class="footer-social">
                     <a href="<?php echo get_setting('social_instagram', '#'); ?>"><i class="fab fa-instagram"></i></a>
                     <a href="<?php echo get_setting('social_facebook', '#'); ?>"><i class="fab fa-facebook-f"></i></a>
@@ -47,7 +48,8 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; <?php echo date('Y') . " " . get_setting('footer_text', 'Midnight Cyber Cafe'); ?>. All rights reserved.</p>
+            <p>&copy; <?php echo date('Y') . " " . get_setting('footer_text', 'Midnight Cyber Cafe'); ?>. All rights
+                reserved. | Made with ❤️ by VA</p>
         </div>
     </div>
 </footer>
