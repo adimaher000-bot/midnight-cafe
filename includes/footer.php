@@ -49,7 +49,7 @@
         </div>
         <div class="footer-bottom">
             <p>&copy; <?php echo date('Y') . " " . get_setting('footer_text', 'Midnight Cyber Cafe'); ?>. All rights
-                reserved. | Made with ❤️ by VA</p>
+                reserved. | Made with ❤️ by VAdi <br> — Sangharsh · sushil —</p>
         </div>
     </div>
 </footer>
