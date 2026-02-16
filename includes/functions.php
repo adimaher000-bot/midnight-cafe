@@ -85,3 +85,19 @@ function get_setting($key, $default = '')
         return $default;
     }
 }
+
+/**
+ * Get Image Source (Handles File Path vs Base64)
+ */
+function get_image_src($imageVal)
+{
+    if (empty($imageVal)) {
+        return 'https://via.placeholder.com/150?text=No+Image'; // Default placeholder
+    }
+    // Check if Base64
+    if (strpos($imageVal, 'data:') === 0) {
+        return $imageVal;
+    }
+    // Return relative path from root
+    return BASE_URL . 'images/' . $imageVal;
+}

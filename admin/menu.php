@@ -24,17 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sort = (int) $_POST['sort_order'];
         $image = $_POST['current_image'] ?? '';
 
-        // Handle Image Upload
+        // Handle Image Upload (Base64)
         if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-            $target_dir = "../images/";
-            if (!file_exists($target_dir)) {
-                mkdir($target_dir, 0777, true);
-            }
-            $filename = time() . '_' . basename($_FILES['image']['name']);
-            $target_file = $target_dir . $filename;
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-                $image = $filename;
-            }
+            $file_tmp = $_FILES['image']['tmp_name'];
+            $file_type = $_FILES['image']['type'];
+            $data = file_get_contents($file_tmp);
+            $base64 = base64_encode($data);
+            $image = 'data:' . $file_type . ';base64,' . $base64;
         }
 
         if (isset($_POST['menu_id']) && !empty($_POST['menu_id'])) {
@@ -160,7 +156,7 @@ if ($action === 'edit' && isset($_GET['id'])) {
                                 <td><input type="number" value="<?php echo $m['sort_order']; ?>" style="width: 50px;"></td>
                                 <td>
                                     <?php if ($m['image']): ?>
-                                        <img src="../images/<?php echo htmlspecialchars($m['image']); ?>" width="50" height="50"
+                                        <img src="<?php echo get_image_src($m['image']); ?>" width="50" height="50"
                                             style="object-fit: cover; border-radius: 5px;">
                                     <?php else: ?>
                                         <span style="color: #ccc;">No Img</span>
@@ -265,7 +261,7 @@ if ($action === 'edit' && isset($_GET['id'])) {
                         <label>Image</label>
                         <?php if ($item && $item['image']): ?>
                             <div style="margin-bottom: 0.5rem;">
-                                <img src="../images/<?php echo $item['image']; ?>" width="100">
+                                <img src="<?php echo get_image_src($item['image']); ?>" width="100">
                             </div>
                         <?php endif; ?>
                         <input type="file" name="image">

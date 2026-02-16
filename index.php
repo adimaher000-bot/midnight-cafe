@@ -145,10 +145,19 @@ if ($featured_item):
                         <!-- Image or Placeholder -->
                         <div
                             style="height: 200px; overflow: hidden; border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: #eee; display: flex; align-items: center; justify-content: center; position: relative;">
-                            <?php if (!empty($item['image']) && file_exists('images/' . $item['image'])): ?>
-                                <img src="images/<?php echo htmlspecialchars($item['image']); ?>"
-                                    alt="<?php echo htmlspecialchars($item['item_name']); ?>"
-                                    class="card-img" style="width: 100%; height: 100%; object-fit: cover;">
+                            <?php
+                            $hasImage = !empty($item['image']);
+                            if ($hasImage && strpos($item['image'], 'data:') !== 0) {
+                                // Only check file existence for local files
+                                if (!file_exists('images/' . $item['image'])) {
+                                    $hasImage = false;
+                                }
+                            }
+                            ?>
+                            <?php if ($hasImage): ?>
+                                <img src="<?php echo get_image_src($item['image']); ?>"
+                                    alt="<?php echo htmlspecialchars($item['item_name']); ?>" class="card-img"
+                                    style="width: 100%; height: 100%; object-fit: cover;">
                             <?php else: ?>
                                 <div style="text-align: center; color: #888; padding: 1rem;">
                                     <i class="fas fa-image"
@@ -219,8 +228,8 @@ if ($featured_item):
                                     <i class="fas fa-cart-plus"></i> Add to Cart
                                 </button>
                             <?php else: ?>
-                                <button class="btn" style="width: 100%; background: #ccc; cursor: not-allowed; font-size: 0.9rem;"
-                                    disabled>
+                                <button class="btn"
+                                    style="width: 100%; background: #ccc; cursor: not-allowed; font-size: 0.9rem;" disabled>
                                     Unavailable
                                 </button>
                             <?php endif; ?>

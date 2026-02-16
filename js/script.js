@@ -186,7 +186,15 @@ function openProductModal(item) {
     document.getElementById('modalDesc').textContent = item.description;
 
     // Image Handling
-    const imgPath = item.image ? 'images/' + item.image : 'https://via.placeholder.com/400x300?text=No+Image';
+    let imgPath = 'https://via.placeholder.com/400x300?text=No+Image';
+    if (item.image) {
+        if (item.image.startsWith('data:')) {
+            imgPath = item.image;
+        } else {
+            // Assume relative path for legacy images
+            imgPath = 'images/' + item.image;
+        }
+    }
     document.getElementById('modalImg').src = imgPath;
 
     // Price Handling
