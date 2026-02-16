@@ -14,6 +14,13 @@ $options = [
     PDO::ATTR_EMULATE_PREPARES => false,
 ];
 
+// Enable SSL for TiDB Cloud (Required)
+if (strpos($host, 'tidbcloud.com') !== false) {
+    // Standard CA path for Debian/Ubuntu (Render default)
+    $options[PDO::MYSQL_ATTR_SSL_CA] = '/etc/ssl/certs/ca-certificates.crt';
+    $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+}
+
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
