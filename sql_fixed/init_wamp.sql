@@ -60,6 +60,11 @@ CREATE TABLE IF NOT EXISTS bookings (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE SET NULL
 );
 
+CREATE TABLE IF NOT EXISTS settings (
+    setting_key VARCHAR(50) PRIMARY KEY,
+    setting_value TEXT
+);
+
 -- Admin User creation (if not exists) is usually done via registration, 
 -- but here is a sample admin for testing:
 -- Password is 'password123' (hashed usually, but simple for now if app hashes it on input)
