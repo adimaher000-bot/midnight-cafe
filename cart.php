@@ -36,7 +36,6 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 
             $total_price += $product['subtotal'];
             $cart_items[] = $product;
-            $cart_items[] = $product;
         }
     }
 }
@@ -73,8 +72,14 @@ $qr_image = !empty($payment_settings['qr_code_image']) ? 'images/' . $payment_se
                 <?php foreach ($cart_items as $item): ?>
                     <tr>
                         <td>
-                            <img src="images/<?php echo htmlspecialchars($item['image'] ?: 'placeholder.jpg'); ?>" width="50"
-                                style="vertical-align: middle; margin-right: 1rem;">
+                            <?php
+                            $img_src = $item['image'] ?: 'placeholder.jpg';
+                            if (!str_starts_with($img_src, 'data:')) {
+                                $img_src = 'images/' . $img_src;
+                            }
+                            ?>
+                            <img src="<?php echo htmlspecialchars($img_src); ?>" width="50"
+                                style="vertical-align: middle; margin-right: 1rem; border-radius: 5px;">
                             <?php echo htmlspecialchars($item['item_name']); ?>
                         </td>
                         <td>
@@ -119,9 +124,9 @@ $qr_image = !empty($payment_settings['qr_code_image']) ? 'images/' . $payment_se
 
     <!-- Payment Modal -->
     <div id="paymentModal" class="modal"
-        style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);">
+        style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center;">
         <div class="modal-content glass-panel"
-            style="background-color: #1a0f00; margin: 10% auto; padding: 2rem; border: 1px solid var(--primary); width: 90%; max-width: 400px; text-align: center; border-radius: 15px; position: relative;">
+            style="background-color: #1a0f00; margin: auto; padding: 2rem; border: 1px solid var(--primary); width: 90%; max-width: 400px; text-align: center; border-radius: 15px; position: relative; max-height: 90vh; overflow-y: auto;">
             <span class="close" onclick="closePaymentModal()"
                 style="color: var(--primary); float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
             <h2 style="color: var(--primary); margin-bottom: 1.5rem; font-family: 'Fraunces', serif;">Scan to Pay</h2>
