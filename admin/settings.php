@@ -24,12 +24,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'featured_item_id' => $_POST['featured_item_id']
     ];
 
+    // Handle File Upload for QR Code
+    if (isset($_FILES['qr_code_image']) && $_FILES['qr_code_image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = '../images/';
+        $fileName = 'payment-qr-' . time() . '.png'; // unique name
+        $uploadFile = $uploadDir . $fileName;
+
+        // Simple validation - ensure image
+        if (getimagesize($_FILES['qr_code_image']['tmp_name'])) {
+            if (move_uploaded_file($_FILES['qr_code_image']['tmp_name'], $uploadFile)) {
+                $settings['qr_code_image'] = $fileName;
+            } else {
+                $error = "Failed to move uploaded file.";
+            }
+        } else {
+            $error = "File is not a valid image.";
+        }
+    }
+
+    $settings['upi_id'] = $_POST['upi_id'];
+
     try {
         $pdo->beginTransaction();
         $stmt = $pdo->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
 
         foreach ($settings as $key => $value) {
-            $stmt->execute([$key, $value]);
+            // Skip if value is null (e.g. no new image uploaded)
+            if ($value !== null) {
+                $stmt->execute([$key, $value]);
+            }
         }
         $pdo->commit();
         $success = "Settings updated successfully.";
@@ -84,7 +107,7 @@ $menu_items = $pdo->query("SELECT menu_id, item_name FROM menu ORDER BY item_nam
             </p>
         <?php endif; ?>
 
-        <form method="POST" class="card" style="max-width: 800px;">
+        <form method="POST" class="card" style="max-width: 800px;" enctype="multipart/form-data">
             <h2 style="margin-top: 0;">General Settings</h2>
 
             <div style="margin-bottom: 1rem;">
@@ -103,6 +126,24 @@ $menu_items = $pdo->query("SELECT menu_id, item_name FROM menu ORDER BY item_nam
                 <label>Hero Subtitle</label>
                 <input type="text" name="hero_subtitle" value="<?php echo val('hero_subtitle'); ?>" required
                     style="width: 100%; padding: 0.5rem; border: 1px solid #ddd;">
+            </div>
+
+            <h2 style="margin-top: 2rem;">Payment Settings</h2>
+            <div style="margin-bottom: 1rem;">
+                <label>UPI ID</label>
+                <input type="text" name="upi_id" value="<?php echo val('upi_id'); ?>" placeholder="e.g. name@upi"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid #ddd;">
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label>QR Code Image</label>
+                <?php if (val('qr_code_image')): ?>
+                    <div style="margin-bottom: 0.5rem;">
+                        <img src="../images/<?php echo val('qr_code_image'); ?>" alt="Current QR" style="max-height: 100px;">
+                    </div>
+                <?php endif; ?>
+                <input type="file" name="qr_code_image" accept="image/*"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid #ddd;">
+                <p style="font-size: 0.8rem; color: #666;">Upload a new image to replace the current one.</p>
             </div>
 
             <h2 style="margin-top: 2rem;">Featured Section</h2>

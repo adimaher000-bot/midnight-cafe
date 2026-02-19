@@ -1,0 +1,31 @@
+# Receiver Setup Plan - CafeOnline
+
+This document is the "Setup Plan" for the person receiving the "CafeOnline" source code.
+
+## 1. Receive & Extract
+1.  **Download** the `cafeonline.zip` file.
+2.  **Extract** the contents to your local server directory.
+    -   **Windows (XAMPP)**: Extract to `C:\xampp\htdocs\cafeonline\`
+    -   **Mac/Linux (MAMP/LAMP)**: Extract to `/var/www/html/cafeonline/` or similar.
+
+## 2. Server Configuration
+1.  Start your web server (Apache) and database (MySQL).
+2.  Ensure PHP is enabled.
+
+## 3. One-Click Installation
+1.  Open your web browser.
+2.  Visit: [http://localhost/cafeonline/setup_database.php](http://localhost/cafeonline/setup_database.php)
+    -   This script will:
+        -   Create the database `cafe_db`.
+        -   Create all necessary tables (`users`, `menu`, `orders`, `bookings`, `settings`).
+        -   Create the Admin account (`admin@cafe.com` / `admin123`).
+        -   Populate default website settings.
+
+## 4. Verification
+1.  **Visit the Website**: [http://localhost/cafeonline/](http://localhost/cafeonline/) - You should see the homepage with menu items.
+2.  **Login as Admin**: [http://localhost/cafeonline/login.php](http://localhost/cafeonline/login.php)
+    -   Use the credentials created in Step 3.
+
+## 5. Troubleshooting
+-   **"Database not found"**: Run the setup script again.
+-   **"Access denied"**: Check `config/db_connect.php` if you have a custom MySQL password.

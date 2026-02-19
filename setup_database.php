@@ -1,9 +1,9 @@
 <?php
 // setup_database.php
 
-$host = 'localhost';
-$user = 'root';
-$pass = ''; // Default XAMPP password
+$host = getenv('DB_HOST') ?: 'localhost';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASS') !== false ? getenv('DB_PASS') : ''; // Default XAMPP password is empty
 
 try {
     // Connect without database
@@ -56,6 +56,38 @@ try {
 
     echo "<h3>Setup Complete!</h3>";
     echo "<p><a href='index.php'>Go to Website</a></p>";
+
+    // Run Settings Setup
+    echo "<hr>";
+    // We can't easily include setup_settings.php because it requires db_connect.php which creates a NEW connection.
+    // Instead, let's run the settings logic directly here or redirect.
+    // Better: Allow setup_settings.php to be run independently or via redirect.
+    // Let's just add a link for now, or better yet, duplicate the critical logic here to ensure it's done.
+
+    // Create 'settings' table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS settings (
+        setting_key VARCHAR(50) PRIMARY KEY,
+        setting_value TEXT
+    )");
+    echo "Settings table checked/created.<br>";
+
+    // Insert defaults
+    $check_settings = $pdo->query("SELECT COUNT(*) FROM settings")->fetchColumn();
+    if ($check_settings == 0) {
+        $defaults = [
+            'site_title' => 'Midnight Cafe',
+            'hero_title' => 'Taste the Art of Coffee',
+            'hero_subtitle' => 'Where coding meets caffeine.',
+            'footer_text' => 'Midnight Cyber Cafe',
+            'social_facebook' => '#',
+            'social_instagram' => '#'
+        ];
+        $insert_setting = $pdo->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)");
+        foreach ($defaults as $key => $val) {
+            $insert_setting->execute([$key, $val]);
+        }
+        echo "Default settings inserted.<br>";
+    }
 
 } catch (PDOException $e) {
     die("DB Error: " . $e->getMessage() . "<br>Please ensure MySQL is running in XAMPP.");
